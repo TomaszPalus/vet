@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% block title %}Godziny{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Godziny – {{ clinic.name }}</h1>
+<div class="card p-3 mb-3">
+  <form class="row g-2" hx-post="{% url 'hours_set' %}" hx-target="#toast-container" hx-swap="beforeend">
+    {% csrf_token %}
+    <div class="col-md-2">
+      <select class="form-select" name="weekday">
+        {% for i,l in "0 Pon|1 Wt|2 Śr|3 Czw|4 Pt|5 Sob|6 Nied".split("|") %}
+          {% with p=i.split " " %}<option value="{{ p.0 }}">{{ p.1 }}</option>{% endwith %}
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3"><input class="form-control" name="start" placeholder="09:00" required></div>
+    <div class="col-md-3"><input class="form-control" name="end" placeholder="17:00" required></div>
+    <div class="col-md-2 d-grid"><button class="btn btn-primary">Dodaj okno</button></div>
+  </form>
+</div>
+<ul class="list-group">
+  {% for h in hours %}
+    <li class="list-group-item d-flex justify-content-between"><span>{{ h.weekday }} • {{ h.start }}–{{ h.end }}</span></li>
+  {% empty %}
+    <li class="list-group-item text-secondary">Brak godzin.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
