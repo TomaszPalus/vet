@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}Kalendarz{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Kalendarz – {{ clinic.name }}</h1>
+<form class="d-flex gap-2 mb-3" method="get">
+  <input type="date" class="form-control w-auto" name="date" value="{{ day }}">
+  <button class="btn btn-outline-primary">Pokaż</button>
+</form>
+<ul class="list-group">
+  {% for a in appts %}
+    <li class="list-group-item d-flex justify-content-between">
+      <span>{{ a.starts_at|date:"H:i" }}–{{ a.ends_at|date:"H:i" }} • {{ a.pet.name }} • {{ a.status }}</span>
+      <span class="text-secondary small">Vet: {{ a.vet.title }}</span>
+    </li>
+  {% empty %}
+    <li class="list-group-item text-secondary">Brak wizyt.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
