@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Panel kliniki{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Panel: {{ clinic.name }}</h1>
+<div class="row g-3">
+  <div class="col-md-4"><div class="card p-3"><div class="fw-semibold">Weter.</div><div class="display-6">{{ vets }}</div></div></div>
+  <div class="col-md-4"><div class="card p-3"><div class="fw-semibold">Godziny</div><div class="display-6">{{ hrs }}</div></div></div>
+  <div class="col-md-4"><div class="card p-3"><div class="fw-semibold">Wizyty</div><div class="display-6">{{ appts }}</div></div></div>
+</div>
+<div class="mt-3 d-flex gap-2">
+  <a class="btn btn-outline-primary" href="{% url 'vets_list' %}">Weterynarze</a>
+  <a class="btn btn-outline-primary" href="{% url 'hours_list' %}">Godziny</a>
+  <a class="btn btn-outline-primary" href="{% url 'exceptions_list' %}">Wyjątki</a>
+  <a class="btn btn-outline-primary" href="{% url 'clinic_calendar' %}">Kalendarz</a>
+</div>
+{% endblock %}
