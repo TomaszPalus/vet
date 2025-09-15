@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block title %}Weterynarze{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Weterynarze – {{ clinic.name }}</h1>
+<div class="card p-3 mb-3">
+  <form class="row g-2" hx-post="{% url 'vet_create' %}" hx-target="#toast-container" hx-swap="beforeend">
+    {% csrf_token %}
+    <div class="col-md-5"><input class="form-control" name="email" placeholder="email veta" required></div>
+    <div class="col-md-5"><input class="form-control" name="title" placeholder="tytuł (np. lek. wet.)"></div>
+    <div class="col-md-2 d-grid"><button class="btn btn-primary">Dodaj</button></div>
+  </form>
+</div>
+<div class="vstack gap-2">
+  {% for v in vets %}
+  <div class="card"><div class="card-body d-flex justify-content-between">
+    <div><b>{{ v.user.email }}</b> • {{ v.title }}</div>
+    <form hx-post="{% url 'vet_delete' v.id %}" hx-target="#toast-container" hx-swap="beforeend" _="on htmx:afterOnLoad remove closest .card">
+      {% csrf_token %}<button class="btn btn-outline-danger btn-sm">Usuń</button>
+    </form>
+  </div></div>
+  {% empty %}<p class="text-secondary">Brak weterynarzy.</p>{% endfor %}
+</div>
+{% endblock %}
