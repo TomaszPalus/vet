@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{% block title %}PetNavigator{% endblock %}</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+{% load static %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- HOTFIX: inline styles (bez static) -->
+<style>
+/* Typografia i odstępy */
+.display-hero{font-size:3.2rem; line-height:1.1}
+.lead-soft{color:var(--muted); font-size:1.05rem}
+.section{padding:72px 0}
+.hero{min-height:92vh; grid-template-columns:1.1fr .9fr}
+
+/* Hero card mocniej „produktowo” */
+.hero-card{padding:32px}
+.hero-card .form-select{height:48px}
+.hero-card .btn{height:48px}
+
+/* Klikalne chipy (Kot/Pies…) */
+.chip{transition:.15s}
+.chip:hover{transform:translateY(-1px)}
+.chip input{display:none}
+
+/* Pasek „Zaufali nam” */
+.brand-strip{
+  background:var(--cream2); border:1px solid var(--line); border-radius:16px; padding:14px 18px;
+}
+.brand-strip img{opacity:.65; filter:grayscale(100%); height:28px}
+.brand-strip img:hover{opacity:.9; filter:none}
+
+/* Karty klinik + karuzela */
+.card-clinic{border-radius:18px; overflow:hidden}
+.card-clinic .cover{height:200px; background:#eee center/cover no-repeat}
+.card-clinic .body{padding:16px}
+.carousel-control-prev, .carousel-control-next{
+  width:48px; height:48px; top:-24px; transform:translateY(-100%);
+  background:#fff; border:1px solid var(--line); border-radius:999px; opacity:.95;
+}
+.carousel-control-prev-icon, .carousel-control-next-icon{filter:invert(12%) sepia(12%) saturate(1500%) hue-rotate(195deg)}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.9.12" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav class="navbar sticky-top">
+    <div class="container-xxl py-2">
+      <a class="navbar-brand fw-bold" href="/">🐾 PetNavigator</a>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-navy" href="/clinics/">Kliniki</a>
+        <a class="btn btn-outline-navy" href="/appointments/">Wizyty</a>
+        <a class="btn btn-outline-navy" href="/pets/">Zwierzaki</a>
+        {% if request.user.is_authenticated %}
+          <a class="btn btn-navy" href="/logout/">Wyloguj</a>
+        {% else %}
+          <a class="btn btn-light" href="/login/">Zaloguj</a>
+          <a class="btn btn-orange" href="/signup/">Zacznij</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-xxl py-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container-xxl py-5">
+      <div class="row g-4">
+        <div class="col-md-5">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="fw-bold">🐾 PetNavigator</div>
+          </div>
+          <p class="text-muted m-0">Umawiaj wizyty bez dzwonienia. Prosto, szybko, skutecznie.</p>
+        </div>
+        <div class="col-md-7">
+          <div class="row">
+            <div class="col-6 col-md-4">
+              <div class="fw-semibold mb-2">Produkt</div>
+              <ul class="list-unstyled text-muted small m-0">
+                <li><a href="/clinics/" class="link-dark text-decoration-none">Kliniki</a></li>
+                <li><a href="/appointments/" class="link-dark text-decoration-none">Moje wizyty</a></li>
+              </ul>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="fw-semibold mb-2">Dla klinik</div>
+              <ul class="list-unstyled text-muted small m-0">
+                <li>Panel kliniki</li>
+                <li>Integracje</li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="fw-semibold mb-2">Newsletter</div>
+              <form class="d-flex gap-2">
+                <input class="form-control form-control-sm" placeholder="Twój e-mail">
+                <button class="btn btn-navy btn-sm">Zapisz</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="d-flex justify-content-between flex-wrap text-muted small">
+        <span>© {{ now|default:None }} PetNavigator</span>
+        <span>Django • HTMX • Bootstrap</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal & Toasts -->
+  <div class="modal fade" id="globalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content" id="modalBody"></div></div>
+  </div>
+  <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.body.addEventListener('htmx:afterSwap', e=>{
+      if(e.detail.target?.id==='modalBody'){
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('globalModal')).show();
+      }
+      e.detail.target.querySelectorAll?.('.toast').forEach(el=>new bootstrap.Toast(el).show());
+    });
+  </script>
+</body>
+</html>
