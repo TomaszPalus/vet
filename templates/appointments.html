@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% block title %}Moje wizyty • PetNavigator{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Moje wizyty</h1>
+
+<div class="vstack gap-2">
+  {% for a in appts %}
+    <div class="card p-3">
+      <div class="list-row">
+        <div>
+          <div class="fw-semibold">{{ a.clinic.name }}</div>
+          <div class="item-muted">{{ a.starts_at|date:"Y-m-d H:i" }} – {{ a.ends_at|date:"H:i" }} • {{ a.status }}</div>
+          <div class="item-muted">Pupil: {{ a.pet.name }}</div>
+        </div>
+        <div class="d-flex gap-2">
+          {% if a.status == "NEW" %}
+          <form hx-post="{% url 'cancel_appointment' a.id %}" hx-target="#toast-container" hx-swap="beforeend">{% csrf_token %}
+            <button class="btn btn-outline-primary">Anuluj</button>
+          </form>
+          {% elif a.status == "CANCELLED" %}
+          <form hx-post="{% url 'undo_cancel' a.id %}" hx-target="#toast-container" hx-swap="beforeend">{% csrf_token %}
+            <button class="btn btn-outline-primary">Cofnij</button>
+          </form>
+          {% else %}
+          <button class="btn btn-light" disabled>Brak akcji</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="hint">Brak wizyt.</p>
+  {% endfor %}
+</div>
+{% endblock %}
