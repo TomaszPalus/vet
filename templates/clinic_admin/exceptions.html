@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% block title %}Wyjątki{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Wyjątki – {{ clinic.name }}</h1>
+<div class="card p-3 mb-3">
+  <form class="row g-2" hx-post="{% url 'exception_toggle' %}" hx-target="#toast-container" hx-swap="beforeend">
+    {% csrf_token %}
+    <div class="col-md-4"><input type="date" class="form-control" name="date" required></div>
+    <div class="col-md-4">
+      <select class="form-select" name="closed">
+        <option value="1">Zamknięte</option>
+        <option value="0">Otwarte (zostaw jak jest)</option>
+      </select>
+    </div>
+    <div class="col-md-2 d-grid"><button class="btn btn-primary">Zapisz</button></div>
+  </form>
+</div>
+<ul class="list-group">
+  {% for e in exceptions %}
+    <li class="list-group-item d-flex justify-content-between">
+      <span>{{ e.date }} — {% if e.closed %}ZAMKNIĘTE{% else %}otwarte{% endif %}</span>
+    </li>
+  {% empty %}
+    <li class="list-group-item text-secondary">Brak wyjątków.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
