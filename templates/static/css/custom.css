@@ -1,0 +1,132 @@
+/* ====== Paleta ====== */
+:root{
+  --cream:#fff8ef;
+  --cream-2:#fff2e0;
+  --navy:#1e255e;        /* ciemny granat – CTA/teksty nagłówkowe */
+  --ink:#23262f;         /* tekst główny */
+  --muted:#6f7785;       /* opis */
+  --line:#eadfce;        /* delikatna linia */
+  --white:#ffffff;
+  --orange:#ff7a1a;      /* akcent */
+}
+
+/* ====== Fundamenty ====== */
+html,body{height:100%}
+body{
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(255,122,26,.08), transparent),
+              var(--cream);
+}
+
+/* typografia */
+h1,h2,h3{letter-spacing:.15px}
+.display-serif{
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+}
+
+/* layout */
+.container-xxl{max-width:1180px}
+
+/* ====== Navbar ====== */
+.navbar{
+  background: rgba(255,255,255,.85)!important;
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.navbar .btn{border-radius:28px; padding:.5rem 1rem}
+
+/* ====== Karty / elementy ====== */
+.card{
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--white);
+  box-shadow: 0 12px 40px rgba(30,37,94,.06);
+}
+.badge-soft{
+  background: var(--cream-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding:.35rem .7rem;
+  font-size:.85rem;
+}
+
+/* przyciski */
+.btn{
+  border-radius: 28px;
+  font-weight: 600;
+}
+.btn-navy{
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.btn-navy:hover{filter: brightness(1.05)}
+.btn-outline-navy{
+  border-color: var(--navy); color: var(--navy); background: transparent;
+}
+.btn-outline-navy:hover{background: var(--navy); color:#fff}
+.btn-orange{
+  background: var(--orange);
+  border-color: var(--orange);
+  color:#111;
+}
+
+/* hero */
+.hero{
+  min-height: 88vh;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 40px;
+}
+.hero-card{
+  padding: 28px;
+}
+.hero .chips .chip{
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid var(--line); border-radius:16px; padding:.55rem .8rem;
+  background:#fff; cursor:pointer; user-select:none;
+}
+.hero .chips .chip.active{
+  border-color: var(--navy); box-shadow: 0 6px 18px rgba(30,37,94,.12);
+}
+
+/* listy / sekcje */
+.section{padding: 64px 0}
+.section-title{
+  color: var(--navy);
+  font-weight: 800;
+  letter-spacing:.2px;
+}
+
+/* tiles */
+.tile{
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 10px 28px rgba(30,37,94,.06);
+}
+
+/* stopka */
+.footer{
+  background: var(--cream-2);
+  border-top: 1px solid var(--line);
+}
+
+/* formularze */
+.form-control, .form-select{
+  border-radius: 14px;
+  border:1px solid #e6dac9;
+}
+.form-control:focus, .form-select:focus{
+  border-color: var(--navy); box-shadow: 0 0 0 .2rem rgba(30,37,94,.12)
+}
+
+/* slot-pills (używane dalej na liście klinik) */
+.slot-pill{
+  border:1px solid var(--line); border-radius:999px; padding:.5rem .9rem; background:#fff
+}
+.slot-pill:hover{border-color:var(--navy); color:var(--navy)}
