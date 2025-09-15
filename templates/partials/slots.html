@@ -1,0 +1,13 @@
+{% if slots %}
+  <div class="d-flex flex-wrap gap-2">
+    {% for s,e in slots %}
+      <button class="slot-pill"
+        hx-get="{% url 'book_preview' clinic.id %}?start={{s|date:'c'}}&end={{e|date:'c'}}"
+        hx-target="#modalBody" hx-swap="innerHTML">
+        {{ s|date:"H:i" }}
+      </button>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="hint">Brak wolnych terminów w wybranym dniu.</div>
+{% endif %}
