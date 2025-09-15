@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "scripts": {
+    "build:tw": "tailwindcss -i ./core/static/src/input.css -o ./core/static/css/tw.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10",
+    "postcss": "^8.4.41",
+    "autoprefixer": "^10.4.19"
+  }
+}
