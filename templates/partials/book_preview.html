@@ -1,0 +1,15 @@
+<div class="modal-header"><h5 class="modal-title">Potwierdź</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+<div class="modal-body">
+  <div class="mb-2"><strong>{{ clinic.name }}</strong></div>
+  <div class="text-secondary mb-3">{{ start|date:"Y-m-d H:i" }}</div>
+  <form hx-post="{% url 'book_confirm' clinic.id %}" hx-target="#toast-container" hx-swap="beforeend"
+        hx-on="htmx:afterOnLoad: bootstrap.Modal.getOrCreateInstance(document.getElementById('globalModal')).hide()">
+    <input type="hidden" name="start" value="{{ start }}"><input type="hidden" name="end" value="{{ end }}">
+    <div class="mb-3"><label class="form-label">Pupil</label>
+      <select class="form-select" name="pet_id" required>{% for p in pets %}<option value="{{p.id}}">{{p.name}} ({{p.species}})</option>{% endfor %}</select>
+    </div>
+    <div class="text-end"><button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Anuluj</button>
+      <button class="btn btn-primary">Rezerwuj</button></div>
+  </form>
+</div>
