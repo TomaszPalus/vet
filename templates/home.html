@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}PetNavigator – umów wizytę bez dzwonienia{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <!-- lewa kolumna -->
+  <div>
+    <div class="card hero-card">
+      <div class="badge-soft mb-2">Witamy w PetNavigator.</div>
+      <h1 class="display-hero fw-800 mb-2" style="color:var(--navy)">
+        Jak możemy pomóc Twojemu pupilowi?
+      </h1>
+      <p class="lead-soft mb-4">Umów wizytę online — szybciej niż przez telefon.</p>
+
+      <!-- chips: wybór gatunku -->
+      <div class="mb-3">
+        <div class="fw-semibold mb-2">Dla kogo jest wizyta?</div>
+        <div class="chips d-flex flex-wrap gap-2">
+          <label class="chip active">
+            <input type="radio" name="species" value="cat" checked>
+            <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=64&q=60" width="28" height="28" style="border-radius:8px">
+            Kot
+          </label>
+          <label class="chip">
+            <input type="radio" name="species" value="dog">
+            <img src="https://images.unsplash.com/photo-1507149833265-60c372daea22?w=64&q=60" width="28" height="28" style="border-radius:8px">
+            Pies
+          </label>
+          <label class="chip">
+            <input type="radio" name="species" value="small">
+            <img src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=64&q=60" width="28" height="28" style="border-radius:8px">
+            Małe zwierzę
+          </label>
+        </div>
+      </div>
+
+      <!-- wybór kliniki -->
+      <form action="/clinics/" method="get" class="vstack gap-2">
+        <label class="form-label fw-semibold m-0">Klinika</label>
+        <select class="form-select" name="clinic">
+          {% for c in clinics %}<option value="{{ c.id }}">{{ c.city }} – {{ c.name }}</option>{% endfor %}
+        </select>
+        <div class="d-grid d-sm-flex gap-2 mt-2">
+          <button class="btn btn-navy btn-lg flex-fill">Umów wizytę</button>
+          <a href="/appointments/" class="btn btn-outline-navy btn-lg">Moje wizyty</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- prawa kolumna: duże zdjęcie -->
+  <div class="position-relative">
+    <div class="ratio ratio-4x3" style="border-radius:26px;
+      background:url('https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+      box-shadow:0 30px 80px rgba(30,37,94,.18);">
+    </div>
+  </div>
+</section>
+
+<script>
+  // mini-JS do aktywnej „pigułki”
+  document.querySelectorAll('.chip').forEach(ch=>{
+    ch.addEventListener('click',()=>{
+      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      ch.classList.add('active');
+    })
+  });
+</script>
+
+<section class="section pt-0">
+  <div class="brand-strip d-flex align-items-center justify-content-between gap-3">
+    <span class="text-muted small">Zaufali nam</span>
+    <div class="d-flex gap-4 flex-wrap">
+      <img src="https://dummyimage.com/120x28/ddd/fff.png&text=VetNews" alt="">
+      <img src="https://dummyimage.com/100x28/ddd/fff.png&text=Zoo+" alt="">
+      <img src="https://dummyimage.com/90x28/ddd/fff.png&text=PetLab" alt="">
+      <img src="https://dummyimage.com/110x28/ddd/fff.png&text=Animals" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- Sekcja: „Dlaczego warto” -->
+<section class="section">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-6">
+      <h2 class="section-title display-6 mb-3">Prawdziwa wygoda dla opiekunów.</h2>
+      <p class="text-muted">Transparentne terminy, czytelna rezerwacja i przypomnienia e-mail. Wizyta umówiona w kilkadziesiąt sekund.</p>
+      <div class="row g-3 mt-2">
+        <div class="col-sm-6"><div class="tile h-100">
+          <div class="fw-semibold">Łatwe terminy</div>
+          <div class="text-muted small m-0">Sloty na żywo — po prostu kliknij.</div>
+        </div></div>
+        <div class="col-sm-6"><div class="tile h-100">
+          <div class="fw-semibold">Przypomnienia</div>
+          <div class="text-muted small m-0">24h i 2h przed wizytą.</div>
+        </div></div>
+        <div class="col-sm-6"><div class="tile h-100">
+          <div class="fw-semibold">Mapa klinik</div>
+          <div class="text-muted small m-0">Wkrótce „blisko mnie”.</div>
+        </div></div>
+        <div class="col-sm-6"><div class="tile h-100">
+          <div class="fw-semibold">Płatność online</div>
+          <div class="text-muted small m-0">Stripe w planie.</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="tile">
+        <img src="https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=1400&auto=format&fit=crop" class="w-100" style="border-radius:12px" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="d-flex align-items-end justify-content-between mb-3">
+    <h2 class="section-title m-0">Kliniki blisko Ciebie</h2>
+    <a href="/clinics/" class="btn btn-outline-navy">Zobacz wszystkie</a>
+  </div>
+
+  <div id="clinicsCarousel" class="carousel slide" data-bs-ride="false">
+    <div class="carousel-inner">
+
+      {% for c in clinics %}
+      {% if forloop.first %}<div class="carousel-item active"><div class="row g-3">{% endif %}
+      <div class="col-md-4">
+        <div class="card card-clinic">
+          <div class="cover" style="background-image:url('https://images.unsplash.com/photo-1585421514738-01798e348b17?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="body">
+            <div class="fw-semibold">{{ c.name }}</div>
+            <div class="text-muted small mb-2">{{ c.address }}, {{ c.city }}</div>
+            <div class="d-flex gap-2">
+              <a class="btn btn-outline-navy flex-fill" href="/clinics/">Szczegóły</a>
+              <a class="btn btn-navy" href="/clinics/">Umów</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if forloop.counter|divisibleby:3 and not forloop.last %}</div></div><div class="carousel-item"><div class="row g-3">{% endif %}
+      {% if forloop.last %}</div></div>{% endif %}
+      {% endfor %}
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Prev</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#clinicsCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+
+<!-- Sekcja: Jak to działa -->
+<section class="section">
+  <div class="text-center mb-4">
+    <h2 class="section-title">Jak to działa</h2>
+    <p class="text-muted">Trzy kroki i gotowe.</p>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-4"><div class="tile h-100 text-center">
+      <div class="badge-soft mb-2">Krok 1</div>
+      <div class="fw-semibold mb-1">Wybierz klinikę</div>
+      <div class="text-muted small">Przeglądaj i filtruj.</div>
+    </div></div>
+    <div class="col-md-4"><div class="tile h-100 text-center">
+      <div class="badge-soft mb-2">Krok 2</div>
+      <div class="fw-semibold mb-1">Kliknij termin</div>
+      <div class="text-muted small">Sloty dostępne na żywo.</div>
+    </div></div>
+    <div class="col-md-4"><div class="tile h-100 text-center">
+      <div class="badge-soft mb-2">Krok 3</div>
+      <div class="fw-semibold mb-1">Potwierdź</div>
+      <div class="text-muted small">Dostaniesz potwierdzenie i przypomnienia.</div>
+    </div></div>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="card p-4 p-md-5 text-center">
+    <h3 class="mb-2" style="color:var(--navy)">Gotowy na wizytę?</h3>
+    <p class="text-muted mb-3">Sprawdź dostępne terminy w najbliższej klinice.</p>
+    <a class="btn btn-navy btn-lg px-4" href="/clinics/">Przeglądaj kliniki</a>
+  </div>
+</section>
+
+{% endblock %}
